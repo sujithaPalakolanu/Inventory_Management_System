@@ -1,0 +1,283 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="InventoryDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="category">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="qualityFlag" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="HistStockDetails">
+          <Key>
+            <PropertyRef Name="HistID" />
+          </Key>
+          <Property Name="HistID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="sellinValue" Type="int" Nullable="false" />
+          <Property Name="quality" Type="int" Nullable="false" />
+          <Property Name="Createdatetime" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Product">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="Quantity" Type="int" Nullable="false" />
+          <Property Name="PricePerPeice" Type="money" Nullable="false" />
+          <Property Name="CreateDateTime" Type="datetime" Nullable="false" />
+          <Property Name="categoryID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="StockDetails">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="sellinValue" Type="int" Nullable="false" />
+          <Property Name="quality" Type="int" Nullable="false" />
+          <Property Name="categoryID" Type="int" Nullable="false" />
+          <Property Name="Createdatetime" Type="datetime" Nullable="false" />
+          <Property Name="ModifiedDatetime" Type="datetime" Nullable="false" />
+          <Property Name="NoOfPieces" Type="int" />
+        </EntityType>
+        <Association Name="FK__HistStockDet__ID__4E88ABD4">
+          <End Role="StockDetails" Type="Self.StockDetails" Multiplicity="1" />
+          <End Role="HistStockDetails" Type="Self.HistStockDetails" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="StockDetails">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="HistStockDetails">
+              <PropertyRef Name="ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Product__categor__2C3393D0">
+          <End Role="category" Type="Self.category" Multiplicity="1" />
+          <End Role="Product" Type="Self.Product" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="category">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Product">
+              <PropertyRef Name="categoryID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__StockDeta__categ__4D94879B">
+          <End Role="category" Type="Self.category" Multiplicity="1" />
+          <End Role="StockDetails" Type="Self.StockDetails" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="category">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="StockDetails">
+              <PropertyRef Name="categoryID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="InventoryDBModelStoreContainer">
+          <EntitySet Name="category" EntityType="Self.category" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="HistStockDetails" EntityType="Self.HistStockDetails" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Product" EntityType="Self.Product" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="StockDetails" EntityType="Self.StockDetails" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__HistStockDet__ID__4E88ABD4" Association="Self.FK__HistStockDet__ID__4E88ABD4">
+            <End Role="StockDetails" EntitySet="StockDetails" />
+            <End Role="HistStockDetails" EntitySet="HistStockDetails" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Product__categor__2C3393D0" Association="Self.FK__Product__categor__2C3393D0">
+            <End Role="category" EntitySet="category" />
+            <End Role="Product" EntitySet="Product" />
+          </AssociationSet>
+          <AssociationSet Name="FK__StockDeta__categ__4D94879B" Association="Self.FK__StockDeta__categ__4D94879B">
+            <End Role="category" EntitySet="category" />
+            <End Role="StockDetails" EntitySet="StockDetails" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="InventoryDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="category">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="qualityFlag" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Products" Relationship="Self.FK__Product__categor__2C3393D0" FromRole="category" ToRole="Product" />
+          <NavigationProperty Name="StockDetails" Relationship="Self.FK__StockDeta__categ__4D94879B" FromRole="category" ToRole="StockDetails" />
+        </EntityType>
+        <EntityType Name="HistStockDetail">
+          <Key>
+            <PropertyRef Name="HistID" />
+          </Key>
+          <Property Name="HistID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="sellinValue" Type="Int32" Nullable="false" />
+          <Property Name="quality" Type="Int32" Nullable="false" />
+          <Property Name="Createdatetime" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="StockDetail" Relationship="Self.FK__HistStockDet__ID__4E88ABD4" FromRole="HistStockDetails" ToRole="StockDetails" />
+        </EntityType>
+        <EntityType Name="Product">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Quantity" Type="Int32" Nullable="false" />
+          <Property Name="PricePerPeice" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+          <Property Name="CreateDateTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="categoryID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="category" Relationship="Self.FK__Product__categor__2C3393D0" FromRole="Product" ToRole="category" />
+        </EntityType>
+        <EntityType Name="StockDetail">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="sellinValue" Type="Int32" Nullable="false" />
+          <Property Name="quality" Type="Int32" Nullable="false" />
+          <Property Name="categoryID" Type="Int32" Nullable="false" />
+          <Property Name="Createdatetime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ModifiedDatetime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="NoOfPieces" Type="Int32" />
+          <NavigationProperty Name="category" Relationship="Self.FK__StockDeta__categ__4D94879B" FromRole="StockDetails" ToRole="category" />
+          <NavigationProperty Name="HistStockDetails" Relationship="Self.FK__HistStockDet__ID__4E88ABD4" FromRole="StockDetails" ToRole="HistStockDetails" />
+        </EntityType>
+        <Association Name="FK__Product__categor__2C3393D0">
+          <End Role="category" Type="Self.category" Multiplicity="1" />
+          <End Role="Product" Type="Self.Product" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="category">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Product">
+              <PropertyRef Name="categoryID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__StockDeta__categ__4D94879B">
+          <End Role="category" Type="Self.category" Multiplicity="1" />
+          <End Role="StockDetails" Type="Self.StockDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="category">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="StockDetails">
+              <PropertyRef Name="categoryID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__HistStockDet__ID__4E88ABD4">
+          <End Role="StockDetails" Type="Self.StockDetail" Multiplicity="1" />
+          <End Role="HistStockDetails" Type="Self.HistStockDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="StockDetails">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="HistStockDetails">
+              <PropertyRef Name="ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="InventoryDBEntities2" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="categories" EntityType="Self.category" />
+          <EntitySet Name="HistStockDetails" EntityType="Self.HistStockDetail" />
+          <EntitySet Name="Products" EntityType="Self.Product" />
+          <EntitySet Name="StockDetails" EntityType="Self.StockDetail" />
+          <AssociationSet Name="FK__Product__categor__2C3393D0" Association="Self.FK__Product__categor__2C3393D0">
+            <End Role="category" EntitySet="categories" />
+            <End Role="Product" EntitySet="Products" />
+          </AssociationSet>
+          <AssociationSet Name="FK__StockDeta__categ__4D94879B" Association="Self.FK__StockDeta__categ__4D94879B">
+            <End Role="category" EntitySet="categories" />
+            <End Role="StockDetails" EntitySet="StockDetails" />
+          </AssociationSet>
+          <AssociationSet Name="FK__HistStockDet__ID__4E88ABD4" Association="Self.FK__HistStockDet__ID__4E88ABD4">
+            <End Role="StockDetails" EntitySet="StockDetails" />
+            <End Role="HistStockDetails" EntitySet="HistStockDetails" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="InventoryDBModelStoreContainer" CdmEntityContainer="InventoryDBEntities2">
+          <EntitySetMapping Name="categories">
+            <EntityTypeMapping TypeName="InventoryDBModel.category">
+              <MappingFragment StoreEntitySet="category">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="qualityFlag" ColumnName="qualityFlag" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="HistStockDetails">
+            <EntityTypeMapping TypeName="InventoryDBModel.HistStockDetail">
+              <MappingFragment StoreEntitySet="HistStockDetails">
+                <ScalarProperty Name="HistID" ColumnName="HistID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="sellinValue" ColumnName="sellinValue" />
+                <ScalarProperty Name="quality" ColumnName="quality" />
+                <ScalarProperty Name="Createdatetime" ColumnName="Createdatetime" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Products">
+            <EntityTypeMapping TypeName="InventoryDBModel.Product">
+              <MappingFragment StoreEntitySet="Product">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+                <ScalarProperty Name="PricePerPeice" ColumnName="PricePerPeice" />
+                <ScalarProperty Name="CreateDateTime" ColumnName="CreateDateTime" />
+                <ScalarProperty Name="categoryID" ColumnName="categoryID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="StockDetails">
+            <EntityTypeMapping TypeName="InventoryDBModel.StockDetail">
+              <MappingFragment StoreEntitySet="StockDetails">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="sellinValue" ColumnName="sellinValue" />
+                <ScalarProperty Name="quality" ColumnName="quality" />
+                <ScalarProperty Name="categoryID" ColumnName="categoryID" />
+                <ScalarProperty Name="Createdatetime" ColumnName="Createdatetime" />
+                <ScalarProperty Name="ModifiedDatetime" ColumnName="ModifiedDatetime" />
+                <ScalarProperty Name="NoOfPieces" ColumnName="NoOfPieces" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
